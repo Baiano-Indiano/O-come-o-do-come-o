@@ -1,11 +1,13 @@
 var otirano, ocorreno;
 var floor, floor_Animation;
 var invisible_floor;
+var fumaca, fumaca_Img;
 
 function preload(){
 
 ocorreno = loadAnimation("trex1.png", "trex3.png", "trex4.png");
 floor_Animation = loadImage("ground2.png");
+fumaca_Img = loadImage("cloud.png");
 
 }
 function setup(){
@@ -25,12 +27,16 @@ invisible_floor.visible = false;
 
 borda = createEdgeSprites();
 
+//Como criar números aleatórios
+//var roleta = Math.round(random(1,100));
+//console.log(roleta);
+
 }
 function draw(){
 
 background("#e6e6e6");
 
-console.log(otirano.y);
+//console.log(otirano.y);
 
 floor.velocityX = -2;
 if(floor.x < 0 ){
@@ -45,6 +51,23 @@ if(keyDown("space")&& otirano.y >= 140){
 otirano.velocityY += 1;
 otirano.collide(invisible_floor);
 
+algodao();
+
 drawSprites();
 
 }
+
+function algodao(){
+    if(frameCount%60 === 0){
+        fumaca = createSprite(600,100,40,10);
+        fumaca.velocityX = -3;
+        fumaca.addImage(fumaca_Img);
+        fumaca.scale = random(0.5,1);
+        fumaca.y = Math.round(random(10,100));
+        fumaca.depth = otirano.depth;
+        otirano.depth += 1;
+    }
+
+    
+}
+
