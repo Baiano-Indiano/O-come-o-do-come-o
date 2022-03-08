@@ -4,7 +4,13 @@ var invisible_floor;
 var fumaca, fumaca_Img;
 var cacto_1, cacto_2, cacto_3, cacto_4, cacto_5, cacto_6;
 var cafe;
+var algodois;
+var verdinhos;
+var INGAME = 1;
+var PERDEUPLAYBOY = 0;
+var estado;
 
+estado = INGAME;
 
 function preload(){
 
@@ -40,37 +46,52 @@ cafe = 0;
 //Como criar números aleatórios
 //var roleta = Math.round(random(1,100));
 //console.log(roleta);
+algodois = new Group();
+verdinhos = new Group();
 }
 function draw(){
+    background("#e6e6e6");
+    otirano.collide(invisible_floor);
+    //console.log(otirano.y);
 
-background("#e6e6e6");
+if(estado === INGAME){
+    floor.velocityX = -2;
+    otirano.velocityY += 1;
 
-//console.log(otirano.y);
+    algodao();
+    verdinho();
 
-floor.velocityX = -2;
-if(floor.x < 0 ){
-    floor.x = floor.width/2;
+    cafe += Math.round(frameCount/60);
+    
+    if(floor.x < 0 ){
+        floor.x = floor.width/2;
+    }
+
+    if(keyDown("space")&& otirano.y >= 140){
+        otirano.velocityY = -10;
+    }
+
+    if(verdinhos.isTouching(otirano)){
+        estado = PERDEUPLAYBOY;
+
+    }
+
+} else if(estado === PERDEUPLAYBOY){
+    floor.velocityX = 0;
+    algodois.setVelocityXEach(0);
+    verdinhos.setVelocityXEach(0);
+
 }
 
-if(keyDown("space")&& otirano.y >= 140){
-    otirano.velocityY = -10;
 
-}
-
-otirano.velocityY += 1;
-otirano.collide(invisible_floor);
-
-algodao();
-verdinho();
 drawSprites();
 
 text("Score : " + cafe,500,50); 
-cafe += Math.round(frameCount/60);
+
 //Desenhar grade
 /*for (var i  = 0; i <= 600; i+=50){
     line(i,0,i,200);  
     }
-
 for (var j  = 0; j <= 200; j+=50){
     line(0,j,600,j);  
     }*/
@@ -86,6 +107,7 @@ function algodao(){
         fumaca.depth = otirano.depth;
         otirano.depth += 1;
         fumaca.lifetime = 250;
+        algodois.add(fumaca);
     }
 
     
@@ -115,6 +137,7 @@ if(frameCount%60 === 0){
     }
     cacto.scale = 0.5;
     cacto.lifetime = 300;
+    verdinhos.add(cacto);
 }
 
 }
