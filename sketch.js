@@ -11,6 +11,7 @@ var PERDEUPLAYBOY = 0;
 var estado;
 var restart, restartImg;
 var gameOver, gameOverImg;
+var sheeeeesh, ping, pirin;
 
 estado = INGAME;
 
@@ -29,6 +30,10 @@ cacto_3 = loadImage("obstacle3.png");
 cacto_4 = loadImage("obstacle4.png");
 cacto_5 = loadImage("obstacle5.png");
 cacto_6 = loadImage("obstacle6.png");
+
+sheeeeesh = loadSound("die.mp3");
+ping = loadSound("jump.mp3");
+pirin = loadSound("checkPoint.mp3");
 
 }
 function setup(){
@@ -71,7 +76,12 @@ function draw(){
     //console.log(otirano.y);
 
 if(estado === INGAME){
-    floor.velocityX = -2;
+
+    if(cafe % 100 === 0 && cafe > 0){
+        pirin.play();
+        pirin.setVolume(0.5);
+    }
+    floor.velocityX = -(4 + cafe / 100);
     otirano.velocityY += 1;
     gameOver.visible = false;
     restart.visible = false;
@@ -87,11 +97,12 @@ if(estado === INGAME){
 
     if(keyDown("space")&& otirano.y >= 140){
         otirano.velocityY = -10;
+        ping.play();
     }
 
     if(verdinhos.isTouching(otirano)){
         estado = PERDEUPLAYBOY;
-
+        sheeeeesh.play();
     }
 
 } else if(estado === PERDEUPLAYBOY){
@@ -139,7 +150,7 @@ function algodao(){
 function verdinho(){
 if(frameCount%60 === 0){
     var cacto = createSprite(600,165,10,40);
-    cacto.velocityX = -6; 
+    cacto.velocityX = -(6 + cafe / 100); 
     var surprise = Math.round(random(1,6));
     switch (surprise) {
         case 1: cacto.addImage(cacto_1);
