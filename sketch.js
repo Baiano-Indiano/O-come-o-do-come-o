@@ -12,6 +12,7 @@ var estado;
 var restart, restartImg;
 var gameOver, gameOverImg;
 var sheeeeesh, ping, pirin;
+var mensagem = "Hoje não choveu aqui";
 
 estado = INGAME;
 
@@ -69,8 +70,12 @@ algodois = new Group();
 verdinhos = new Group();
 otirano.debug = false;
 otirano.setCollider("circle", 0, 0, 40);
+
+
 }
 function draw(){
+   
+   // console.log(mensagem);
     background("#e6e6e6");
     otirano.collide(invisible_floor);
     //console.log(otirano.y);
@@ -89,7 +94,7 @@ if(estado === INGAME){
     algodao();
     verdinho();
 
-    cafe += Math.round(frameCount/60);
+    cafe += Math.round(frameRate()/60);
     
     if(floor.x < 0 ){
         floor.x = floor.width/2;
@@ -115,7 +120,14 @@ if(estado === INGAME){
     otirano.velocityY = 0;
     restart.visible = true;
     gameOver.visible = true;
+
+        if(mousePressedOver(restart)){
+          reset();
+
+        
+    }
 }
+
 
 
 drawSprites();
@@ -129,6 +141,17 @@ text("Score : " + cafe,500,50);
 for (var j  = 0; j <= 200; j+=50){
     line(0,j,600,j);  
     }*/
+}
+
+function reset(){
+    
+   estado = INGAME;
+
+   cafe = 0;
+   
+   verdinhos.destroyEach();
+   algodois.destroyEach();
+   otirano.changeAnimation("correndo");
 }
 
 function algodao(){
